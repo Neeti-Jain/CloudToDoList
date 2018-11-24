@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="main2.css">
+  <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script src="index.js"></script>s
+
+</head>
+<body>
+
+  <h2>Login Form</h2>
+
+
+    <div class="imgcontainer">
+      <img src="tree.jpg" alt="Avatar" class="avatar">
+    </div>
+
+    <div id = "login_div" class="container">
+      <label for="uname"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" id="email" name="uname" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" id= "pswd" name="psw" required>
+
+      <button onclick="create_user()"  > Create User </button>
+
+      </div>
+
+    <div id = "user_div" class="container1" style="display: none;">
+      <p id = "user_para"> Welcome user</p>
+
+<a id="startref" href="TodoList.htm"></a>
+      <button onclick="enter()"  > Enter wesite </button>
+
+      <button  onclick="logout()"> Logout </button>
+    </div>
+<script type="text/javascript">
+  function enter()
+{
+    var userEmail=document.getElementById("email").value;
+
+  localStorage.setItem("userEmail", userEmail);
+
+document.getElementById("startref").click();
+}
+</script>
+
+</body>
+</html>

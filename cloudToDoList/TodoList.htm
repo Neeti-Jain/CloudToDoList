@@ -1,0 +1,264 @@
+ 
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+<script src="index.js"></script>s
+
+    <link rel="stylesheet" href="main2.css">
+
+    <script>
+
+      var userEmail =localStorage.getItem("userEmail");
+
+$(document).ready(function(){
+    //$("#addlist").click(function(){
+      //  $("#list").show();
+    //});
+    //$("#addtask").click(function(){
+        //$("#task").show();
+    
+
+    //});
+});
+</script>
+
+<script type="text/javascript">
+  var count=0;
+
+function appendTask() {
+
+  var listname=document.getElementById("listname").value;
+
+  if(listname=='')
+  {
+    alert('Enter name')
+
+  }
+  else
+  {
+
+    document.getElementById("task_div").style.display = "block"
+document.getElementById("taskdes").value = '';
+document.getElementById("taskname").value='';
+//    var txt1 = "<p><input type=\"text\" id=\"taskname\" placeholder=\"Task Name...\"></p>"; 
+ //  var txt2 = "<p><input type=\"text\" id=\"taskdes\" placeholder=\"Description...\"></p>"; 
+  // var btnsubmit = "            <button id=\"addtask\" onclick=\"addtaskDB()\">Submit</button>ubmit"; 
+   
+          // Create text with HTML
+             // Create text with DOM
+   // $("body").append(txt1, txt2, btnsubmit);     // Append new elements
+}
+}
+function fun(){
+fun.counter=40;
+var currentDate = new Date();
+var currentTime = currentDate.getTime();
+
+var divElement = document.createElement('div');
+divElement.id = "divi"+currentTime;
+var p='neeti';
+//alert('divElement.id ::',divElement.id );
+//alert(p)
+var divCreatelistElement = document.createElement('div');
+
+var iptNode = document.createElement("input");
+iptNode.setAttribute("type", "text");
+iptNode.id="list"+currentTime;
+
+var button = document.createElement("Button");
+var textForButton = document.createTextNode("Release the alert");
+var listnamenode=document.createTextNode('Enter List Name');
+button.appendChild(textForButton);
+
+var createListButton = document.createElement("Button");
+createListButton.id="createlist"+currentTime;
+var textForcreateListButton = document.createTextNode("Create List");
+createListButton.appendChild(textForcreateListButton)
+
+createListButton.onclick=function(){
+
+  v=iptNode.value;
+  var listNameLabel= document.createTextNode(v);
+  //Todo: Server Call
+  divElement.appendChild(listNameLabel);
+  
+  divCreatelistElement.style.display="none";
+  divElement.appendChild(taskButton );
+}
+
+
+var taskButton = document.createElement("Button");
+
+taskButton.id="task"+currentTime;
+var textForButtonTask = document.createTextNode("Add New Task");
+taskButton.appendChild(textForButtonTask)
+
+divCreatelistElement.appendChild(listnamenode);
+divCreatelistElement.appendChild(iptNode);
+divCreatelistElement.appendChild(createListButton );
+divElement.appendChild(divCreatelistElement)
+
+
+
+
+document.getElementsByTagName("body")[0].appendChild(divElement);
+//alert('divElement.id ::',divElement.id );
+
+var r=divElement.id;
+//alert('before div::',r);
+
+taskButton.onclick = function() {
+  count=0;
+   v=document.getElementById(iptNode.id).value;
+   if(v==''){
+      //alert('Enter List name')
+   }
+  
+ 
+else{
+  //alert('in fun div:',r)
+    funny(r)
+     }
+};
+}
+
+function funny(data){
+  funny.counter=30;
+  //alert(fun.counter);
+  ++fun.counter;
+count=count+1;
+//alert(count);
+if(count==2)
+{
+  //alert('more than 1 ')
+  count=0
+}
+//alert('yahossso');
+
+t=document.getElementById(data).lastChild.innerHTML;
+//alert('div::',data);
+t=document.getElementById(data);
+//alert('div in funny::',t)
+t=document.getElementById(data).childNodes[0].nodeValue;
+//alert('task::',t);
+var divElementTask = document.createElement('p');
+var currentDate = new Date();
+var currentTime = currentDate.getTime();
+
+
+divElementTask.id = "paraID"+currentTime;
+
+
+var node=document.createTextNode('Enter Task Name');
+var iptNode = document.createElement("input");
+iptNode.setAttribute("type", "text");
+
+var iptNode1 = document.createElement("input");
+iptNode1.setAttribute("type", "text");
+var nodeDesc=document.createTextNode('Enter Description');
+
+var addTaskButton = document.createElement("Button");
+addTaskButton.id="addtask"+currentTime;
+addTaskButton.innerHTML = "Add Task"
+addTaskButton.onclick = function() {
+//TODO : server code to add task
+
+  }
+
+divElementTask.appendChild(node);
+divElementTask.appendChild(iptNode);
+divElementTask.appendChild(nodeDesc);
+divElementTask.appendChild(iptNode1);
+divElementTask.appendChild(addTaskButton);
+
+
+//element.insertBefore(div,child);
+//document.getElementsById(data).insertBefore(divElementTask,child);
+//document.getElementById("myLI").parentElement.nodeName;
+document.getElementById(data).appendChild(divElementTask);
+
+
+}
+
+function addToDB(){
+var database=firebase.database();
+currentDate = new Date();
+currentTime = currentDate.getTime();
+
+userid = 'user_'+currentTime;
+
+var userobject =   firebase.database().ref('users/' + "username");
+
+
+}
+
+function addtaskDB()
+{
+  var listname=document.getElementById("listname").value;
+  var desc=document.getElementById("taskdes").value;
+  var tasknametext=document.getElementById("taskname").value;
+
+var database=firebase.database();
+
+currentDate = new Date();
+currentTime = currentDate.getTime();
+
+userid = 'user_'+currentTime;
+
+var userobject =   firebase.database().ref('users/' + "username");
+
+ userobject.child('todolist').child(listname).push(
+  {
+    taskname : tasknametext,
+    description : desc,
+    createdDate : " "+currentDate
+  });
+
+var para = document.createElement("p");
+var node1 = document.createTextNode(tasknametext+ " : "+desc);
+
+para.appendChild(node1);
+
+
+var element = document.getElementById("list");
+var child = document.getElementById("addtask");
+element.insertBefore(para,child);
+
+document.getElementById("task_div").style.display = "none"
+
+}
+
+
+        </script>
+      </head>
+      <body>
+        <h2>My To Do List</h2>
+        <!--  <button> Create List </button>  -->
+        <p>
+          <button id="addlist" onclick="fun()" class="button_green">Add New List</button>
+        </p>
+        <div id="list"  style="display: none;">
+          <p>
+            <input type="text" id="listname" placeholder="List Name...">
+            </p>
+            <button id="addtask" onclick="appendTask()"> Add New dddTask</button>
+          </div>
+          
+          <div id="task_div" style="display: none;">
+         
+
+          <p><input type="text" id="taskname" placeholder="Task Name..."></p> 
+          <p><input type="text" id="taskdes" placeholder="Description..."></p> 
+  <button id="addtask" onclick="addtaskDB()">Submit</button> 
+   
+        </div>
+       
+
+          <br/> 
+        
+      </body>
+    </html>

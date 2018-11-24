@@ -1,0 +1,111 @@
+/* Element selector   */
+p{
+			color: red;
+			font: italic bold 40px helvatica ;
+			border: 4px solid green;
+			padding: 20px; /* top right bottom left  */
+}
+
+span{
+	font: italic  40px helvatica ;
+	border: 4px solid green;
+}
+body{
+/*	background-image: url('bg.jpg'); 
+	background-size: cover;
+	*/
+	/*background-size: 250px 160px;
+	background-repeat: no-repeat;  */
+
+/*	background: black url('bg.jpg') right no-repeat fixed;  */
+}
+/*h3
+{
+			font: italic bold 40px helvatica ;
+			border: 4px dotted pink;
+			padding: 40px 100px 60px 200px;
+}*/
+.green{
+	color:green;
+	background-color: grey
+}
+/* class selector */
+.blue{
+	color:blue;
+}
+/* id selector */
+#brown{
+	color:brown;
+}
+#cyan{
+	color:cyan;
+}
+
+/* style all p inside div tag 
+parent-child selector*/
+div p{
+	color:orange;
+	font: italic  30px helvatica ;
+}
+
+/*  any p having div as parent which has class = blue will be slelected  
+and dont leave space between div and .blue*/
+ div.blue p{
+ 	color: blue;
+ }
+
+ /* psuedo class use  colon   :  */
+ .psuedoclassEg p:hover{
+ 	color:red;
+ 	border:2px solid yellow;
+ }
+
+a {
+	
+	font: italic bold 40px helvatica ;
+color: blue;
+	text-decoration: none;
+}
+ a:hover
+ {
+ 	color:green;
+ }
+  a:active
+ {
+ 	color:red;
+
+ }
+  a:visited
+ {
+ 	color:orange;
+ }
+
+ /* do coloing for 2nd child only */
+.parent-child p:nth-child(2){
+	color:grey;
+}
+
+ /* repeat colorig for every 3rd child.  Make ur own equation */
+.parent-child p:nth-child(3n){
+	color:yellow;
+}
+/* changethe size of first letter in every para */
+#line-style p::first-letter {
+	font-size:200%; 
+	font: italic bold  helvatica ;
+	color:blue;
+	border: 50px;
+}
+
+/* add - before every para 
+same u can add after the para 
+also this cannot be selected  */
+p::before{
+	content: "---"
+}
+
+
+
+
+
+
