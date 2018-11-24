@@ -13,21 +13,26 @@
 
 
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    document.getElementById("user_div").style.display = "block";
-    document.getElementById("login_div").style.display = "none";
-  } else {
-    // No user is signed in.
-    document.getElementById("user_div").style.display = "none";
-    document.getElementById("login_div").style.display = "block";
+  userdiv = document.getElementById("user_div");
+  logindiv =document.getElementById("login_div")
+  if(userdiv!=null && logindiv!=null)
+  {
+    if (user) {
+      // User is signed in.
+      document.getElementById("user_div").style.display = "block";
+      document.getElementById("login_div").style.display = "none";
+    } else {
+      // No user is signed in.
+      document.getElementById("user_div").style.display = "none";
+      document.getElementById("login_div").style.display = "block";
+    }
   }
-
   var user = firebase.auth().currentUser;
   if(user != null)
   {
   	var email_id = user.email;
-  	document.getElementById("user_para").innerHTML = "Welcome " + email_id ;
+    if(document.getElementById("user_para")!=null)
+  	{document.getElementById("user_para").innerHTML = "Welcome " + email_id ;}
   }
 });
 
