@@ -1,16 +1,16 @@
- 
+
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
-<script src="index.js"></script>s
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script src="index.js"></script>
 
+    
     <link rel="stylesheet" href="main2.css">
-
-    <script>
+      <script>
 
       var userEmail =localStorage.getItem("userEmail");
 
@@ -25,8 +25,7 @@ $(document).ready(function(){
     //});
 });
 </script>
-
-<script type="text/javascript">
+      <script type="text/javascript">
   var count=0;
 
 function appendTask() {
@@ -44,9 +43,16 @@ function appendTask() {
     document.getElementById("task_div").style.display = "block"
 document.getElementById("taskdes").value = '';
 document.getElementById("taskname").value='';
-//    var txt1 = "<p><input type=\"text\" id=\"taskname\" placeholder=\"Task Name...\"></p>"; 
- //  var txt2 = "<p><input type=\"text\" id=\"taskdes\" placeholder=\"Description...\"></p>"; 
-  // var btnsubmit = "            <button id=\"addtask\" onclick=\"addtaskDB()\">Submit</button>ubmit"; 
+//    var txt1 = "
+ //       <p>
+ //         <input type=\"text\" id=\"taskname\" placeholder=\"Task Name...\">
+   //       </p>"; 
+ //  var txt2 = "
+   //      <p>
+    //        <input type=\"text\" id=\"taskdes\" placeholder=\"Description...\">
+    //        </p>"; 
+  // var btnsubmit = "            
+    //        <button id=\"addtask\" onclick=\"addtaskDB()\">Submit</button>ubmit"; 
    
           // Create text with HTML
              // Create text with DOM
@@ -78,12 +84,13 @@ var createListButton = document.createElement("Button");
 createListButton.id="createlist"+currentTime;
 var textForcreateListButton = document.createTextNode("Create List");
 createListButton.appendChild(textForcreateListButton)
-
+var listnameValue ="new";
 createListButton.onclick=function(){
 
-  v=iptNode.value;
-  var listNameLabel= document.createTextNode(v);
+  listnameValue=iptNode.value;
+  var listNameLabel= document.createTextNode(listnameValue);
   //Todo: Server Call
+  addlistDB(listnameValue);
   divElement.appendChild(listNameLabel);
   
   divCreatelistElement.style.display="none";
@@ -121,12 +128,12 @@ taskButton.onclick = function() {
  
 else{
   //alert('in fun div:',r)
-    funny(r)
+    funny(r, listnameValue)
      }
 };
 }
 
-function funny(data){
+function funny(data, listnameValue){
   funny.counter=30;
   //alert(fun.counter);
   ++fun.counter;
@@ -165,8 +172,8 @@ var addTaskButton = document.createElement("Button");
 addTaskButton.id="addtask"+currentTime;
 addTaskButton.innerHTML = "Add Task"
 addTaskButton.onclick = function() {
-//TODO : server code to add task
-
+//TODO: server code to add task
+addtaskDB(listnameValue,iptNode1.value,iptNode.value)
   }
 
 divElementTask.appendChild(node);
@@ -196,11 +203,28 @@ var userobject =   firebase.database().ref('users/' + "username");
 
 }
 
-function addtaskDB()
+function addlistDB( listname)
 {
-  var listname=document.getElementById("listname").value;
-  var desc=document.getElementById("taskdes").value;
-  var tasknametext=document.getElementById("taskname").value;
+  
+var database=firebase.database();
+
+currentDate = new Date();
+currentTime = currentDate.getTime();
+
+userid = 'user_'+currentTime;
+
+var userobject =   firebase.database().ref('users/' + userEmail);
+
+ userobject.child('todolist').child(listname).set({createdDate: currentTime});
+
+
+}
+
+function addtaskDB(listname,desc,tasknametext)
+{
+// var listname=document.getElementById("listname").value;
+  //var desc=document.getElementById("taskdes").value;
+  //var tasknametext=document.getElementById("taskname").value;
 
 var database=firebase.database();
 
@@ -209,7 +233,7 @@ currentTime = currentDate.getTime();
 
 userid = 'user_'+currentTime;
 
-var userobject =   firebase.database().ref('users/' + "username");
+var userobject =   firebase.database().ref('users/' + userEmail);
 
  userobject.child('todolist').child(listname).push(
   {
@@ -233,32 +257,30 @@ document.getElementById("task_div").style.display = "none"
 }
 
 
-        </script>
-      </head>
-      <body>
-        <h2>My To Do List</h2>
-        <!--  <button> Create List </button>  -->
-        <p>
-          <button id="addlist" onclick="fun()" class="button_green">Add New List</button>
-        </p>
-        <div id="list"  style="display: none;">
-          <p>
-            <input type="text" id="listname" placeholder="List Name...">
-            </p>
-            <button id="addtask" onclick="appendTask()"> Add New dddTask</button>
-          </div>
-          
-          <div id="task_div" style="display: none;">
-         
-
-          <p><input type="text" id="taskname" placeholder="Task Name..."></p> 
-          <p><input type="text" id="taskdes" placeholder="Description..."></p> 
-  <button id="addtask" onclick="addtaskDB()">Submit</button> 
-   
-        </div>
-       
-
-          <br/> 
         
-      </body>
-    </html>
+          </script>
+        </head>
+        <body>
+          <h2>My To Do List</h2>
+          <!--  <button> Create List </button>  -->
+          <p>
+            <button id="addlist" onclick="fun()" class="button_green">Add New List</button>
+          </p>
+          <div id="list"  style="display: none;">
+            <p>
+              <input type="text" id="listname" placeholder="List Name...">
+              </p>
+              <button id="addtask" onclick="appendTask()"> Add New dddTask</button>
+            </div>
+            <div id="task_div" style="display: none;">
+              <p>
+                <input type="text" id="taskname" placeholder="Task Name...">
+                </p>
+                <p>
+                  <input type="text" id="taskdes" placeholder="Description...">
+                  </p>
+                  <button id="addtask" onclick="addtaskDB()">Submit</button>
+                </div>
+                <br/>
+              </body>
+            </html>

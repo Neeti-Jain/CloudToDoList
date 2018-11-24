@@ -28,11 +28,12 @@
       <input type="password" placeholder="Enter Password" id= "pswd" name="psw" required>
 
       <button onclick="create_user()"  > Create User </button>
+      <button onclick="login()"  > Login User </button>
 
       </div>
 
     <div id = "user_div" class="container1" style="display: none;">
-      <p id = "user_para"> Welcome user</p>
+      <p id = "user_para"> Welcome aa user</p>
 
 <a id="startref" href="TodoList.htm"></a>
       <button onclick="enter()"  > Enter wesite </button>
@@ -43,9 +44,10 @@
   function enter()
 {
     var userEmail=document.getElementById("email").value;
+    userEmail = userEmail.replace("@","").replace(".","");
+alert(userEmail)
 
-  localStorage.setItem("userEmail", userEmail);
-
+  localStorage.setItem("userEmail", userEmail.replace("@","").replace(".",""));
 document.getElementById("startref").click();
 }
 </script>
