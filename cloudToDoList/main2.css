@@ -52,6 +52,12 @@ button:hover {
     margin: 24px 0 12px 0;
 }
 
+.todolistdiv{
+  padding: 25px;
+  background-color: lemonchiffon;
+  border-style: solid;
+  border-color: skyblue;
+  }
 img.avatar {
     width: 40%;
     border-radius: 50%;
