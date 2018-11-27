@@ -10,6 +10,9 @@
 
     
     <link rel="stylesheet" href="main2.css">
+    <style type="text/css">
+
+    </style>
       <script>
 
       var userEmail =localStorage.getItem("userEmail");
@@ -92,6 +95,8 @@ createListButton.onclick=function(){
     addlistDB(listnameValue);
     divElement.appendChild(listNameLabel);
     divCreatelistElement.style.display="none";
+    divElement.appendChild(document.createElement("br"));
+
     divElement.appendChild(taskButton);
 }
 
@@ -164,11 +169,11 @@ iptNode.setAttribute("type", "text");
 
 var iptNode1 = document.createElement("input");
 iptNode1.setAttribute("type", "text");
-var nodeDesc=document.createTextNode('Enter Description');
+var nodeDesc=document.createTextNode('Enter Descriptioaaan');
 
 var addTaskButton = document.createElement("Button");
 addTaskButton.id="addtask"+currentTime;
-addTaskButton.innerHTML = "Add Task"
+addTaskButton.innerHTML = "Submit"
 addTaskButton.onclick = function() {
     addtaskDB(listnameValue,iptNode1.value,iptNode.value)
   }

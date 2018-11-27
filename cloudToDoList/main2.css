@@ -53,11 +53,12 @@ button:hover {
 }
 
 .todolistdiv{
-  padding: 25px;
-  background-color: lemonchiffon;
-  border-style: solid;
-  border-color: skyblue;
-  }
+    margin: 25px;
+    padding: 25px;
+    background-color: lemonchiffon;
+    border-style: solid;
+    border-color: skyblue;
+}
 img.avatar {
     width: 40%;
     border-radius: 50%;
