@@ -19,6 +19,13 @@ firebase.auth().onAuthStateChanged(function(user) {
   {
     if (user) {
       // User is signed in.
+        var user = firebase.auth().currentUser;
+        if(user != null)
+        {
+            var userEmail = user.email;
+            userEmail = getFormattedEmail(userEmail)
+            localStorage.setItem("userEmail", userEmail);
+        }
       document.getElementById("user_div").style.display = "block";
       document.getElementById("login_div").style.display = "none";
       if(document.getElementById("startref")!=null) {

@@ -12,10 +12,17 @@
 
     <script>
 
-      var userEmail = localStorage.getItem("userEmail");
-      if(userEmail == null || userEmail=='')
+    function logoutCall()
+    {
+      localStorage.setItem("userEmail","");
+      logout();
+      window.location.replace("/");
+    };
+
+    var userEmail = localStorage.getItem("userEmail");
+      if(userEmail == null || userEmail == '')
       {
-        logoutCall()
+        logoutCall();
       }
 
 var userdatabase = firebase.database().ref('/users/' + userEmail + "/todolist/");
@@ -86,7 +93,9 @@ function appendShareandAddTaskButton(parentdiv, listnameValue)
 
             subject = "Sharing To Do List"
             body = "Sharing To Do List. Please login to acount to view link: "+window.location.href;
-           // window.open('mailto:shareEmail?subject=subject&body=body');
+            //window.open("https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=shareEmail")
+
+            window.open('mailto:shareEmail?subject=subject&body=body');
         }
     };
 
@@ -388,12 +397,7 @@ function addUpdatetaskDB(existingTaskid, listname,desc,tasknametext)
     return newtaskID;
 }
 
-function logoutCall()
-{
-  localStorage.setItem("userEmail","")
-  logout();
-  window.location.replace("/");
-}
+
 
         
           
@@ -404,7 +408,6 @@ function logoutCall()
     <p>
       <button id="addlist" onclick="createList()" class="button_green">Add New List</button>
       <button  onclick="logoutCall()"> Logout </button> 
-      <a id="startPage" href="index.html"></a>
     </p>
     <div id="userDataDiv"></div>
     <br/>
