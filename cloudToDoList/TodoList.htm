@@ -20,6 +20,7 @@ var listNameArray = [];
 userdatabase.on('value',function(snapshot) {
     var jsonobj = JSON.parse(JSON.stringify(snapshot.val()))
     document.getElementById('userDataDiv').innerHTML="";
+      listNameArray = []
     if(jsonobj!=null){
       initializeUI(jsonobj);
     }
@@ -68,6 +69,22 @@ function appendShareandAddTaskButton(parentdiv, listnameValue)
     var shareListButton = document.createElement("Button");
     shareListButton.innerHTML = "Share"
 
+shareListButton.onclick = function() {
+
+  
+
+
+    var shareEmail = prompt("Please enter email id to Share");
+    if (shareEmail != null) {
+          shareEmail = shareEmail.trim().replace("@","").replace(".","").toLowerCase();
+          firebase.database().ref('/users/' + userEmail + '/todolist/'+listnameValue).once('value').then(function(snapshot) {
+
+            firebase.database().ref('/users/' + shareEmail + "/todolist/")
+                                          .child("Shared "+listnameValue).set(snapshot.val());
+          });
+
+    }
+};
 
     //Add a button for DELETING a  List 
     var deleteListButton = document.createElement("Button");
@@ -80,7 +97,7 @@ function appendShareandAddTaskButton(parentdiv, listnameValue)
           alert('Enter List name');
        }
     else{
-        addTaskClick(parentdiv, listnameValue)
+        addTaskClick(parentdiv, listnameValue, null, null, null)
          }
     };
     parentdiv.appendChild(taskButton);
@@ -91,11 +108,9 @@ function appendShareandAddTaskButton(parentdiv, listnameValue)
 function initializeUI(jsonobj)
 {
 for (var listkey in jsonobj) {
-    if (jsonobj.hasOwnProperty(listkey)) {
+    if (jsonobj.hasOwnProperty(listkey) && jsonobj[listkey]!=null) {
       
       listNameArray.push(listkey)
-
-      //alert(listkey)
 
       var currentDate = new Date();
       var currentTime = currentDate.getTime();
@@ -170,13 +185,17 @@ function appendTask() {
 }
 }
 
-
+function editTask(listnameValue, taskid, taskContainer, taskName, taskDescription)
+{
+  taskContainer.innerHTML = "";
+  addTaskClick(taskContainer, listnameValue, taskid, taskName, taskDescription)
+}
 
 
 function addTaskDiv(listnameValue, taskid, parentdiv, taskName, taskDescription)
 {
     var taskContainer=document.createElement('div');
-    taskContainer.className  ="todolistdiv" //what
+    taskContainer.className  ="todolistdiv" 
 
     var nameTaskLabel = document.createTextNode('----Task Name-----');
     var nameTask = document.createTextNode(taskName);
@@ -187,7 +206,7 @@ function addTaskDiv(listnameValue, taskid, parentdiv, taskName, taskDescription)
     buttonEdit.innerHTML='Edit'
      buttonEdit.onclick = function(){
       //editTask(taskid, parentdiv, taskName, taskDescription)
-
+      editTask(listnameValue, taskid, taskContainer, taskName, taskDescription)
     };
     var buttonDelete = document.createElement("Button");
     buttonDelete.innerHTML='Delete'
@@ -270,48 +289,50 @@ divElement.appendChild(divCreatelistElement)
 
 
 document.getElementById('userDataDiv').appendChild(divElement)
-
 }
 
-function addTaskClick(parentdiv, listnameValue){
-var divElementTask = document.createElement('p');
-var currentDate = new Date();
-var currentTime = currentDate.getTime();
+function addTaskClick(parentdiv, listnameValue, taskid, taskName, taskDescription){
+    var divElementTask = document.createElement('p');
+    var currentDate = new Date();
+    var currentTime = currentDate.getTime();
 
 
-divElementTask.id = "paraID"+currentTime;
+    divElementTask.id = "paraID"+currentTime;
 
+    var node=document.createTextNode('Enter Task Name');
+    var iptNode = document.createElement("input");
+    iptNode.setAttribute("type", "text");
 
-var node=document.createTextNode('Enter Task Name');
-var iptNode = document.createElement("input");
-iptNode.setAttribute("type", "text");
+    var iptNode1 = document.createElement("input");
+    iptNode1.setAttribute("type", "text");
+    var nodeDesc=document.createTextNode('  Enter Description');
 
-var iptNode1 = document.createElement("input");
-iptNode1.setAttribute("type", "text");
-var nodeDesc=document.createTextNode('  Enter Description');
+    //if editing task
+    if(taskid!=null)
+    {
+      iptNode.value = taskName;
+      iptNode1.value = taskDescription;
+    }
 
-var addTaskButton = document.createElement("Button");
-addTaskButton.id="addtask"+currentTime;
-addTaskButton.innerHTML = "Submit"
-addTaskButton.onclick = function() {
+    var addTaskButton = document.createElement("Button");
+    addTaskButton.id="addtask"+currentTime;
+    addTaskButton.innerHTML = "Submit"
+    addTaskButton.onclick = function() {
+        var newtaskId = addUpdatetaskDB(taskid, listnameValue,iptNode1.value,iptNode.value)
+        divElementTask.style.display="none";
+        addTaskDiv(listnameValue,   newtaskId, parentdiv, iptNode.value, iptNode1.value);
+    }
 
-    var newtaskId = addtaskDB(listnameValue,iptNode1.value,iptNode.value)
-    divElementTask.style.display="none";
+    divElementTask.appendChild(node);
+    divElementTask.appendChild(iptNode);
+    divElementTask.appendChild(nodeDesc);
+    divElementTask.appendChild(iptNode1);
+    divElementTask.appendChild(addTaskButton);
 
-    addTaskDiv(listnameValue,   newtaskId, parentdiv, iptNode.value, iptNode1.value);
-  }
-
-divElementTask.appendChild(node);
-divElementTask.appendChild(iptNode);
-divElementTask.appendChild(nodeDesc);
-divElementTask.appendChild(iptNode1);
-divElementTask.appendChild(addTaskButton);
-
-
-//element.insertBefore(div,child);
-//document.getElementsById(data).insertBefore(divElementTask,child);
-//document.getElementById("myLI").parentElement.nodeName;
-parentdiv.appendChild(divElementTask);
+    //element.insertBefore(div,child);
+    //document.getElementsById(data).insertBefore(divElementTask,child);
+    //document.getElementById("myLI").parentElement.nodeName;
+    parentdiv.appendChild(divElementTask);
 }
 
 function addToDB(){
@@ -332,29 +353,38 @@ function addlistDB(listname)
     userobject.child('todolist').child(listname).set({name:listname,createdDate: currentTime});
 }
 
-function addtaskDB(listname,desc,tasknametext)
+function addUpdatetaskDB(existingTaskid, listname,desc,tasknametext)
 {
-// var listname=document.getElementById("listname").value;
-  //var desc=document.getElementById("taskdes").value;
-  //var tasknametext=document.getElementById("taskname").value;
-
     var database=firebase.database();
-
     currentDate = new Date();
     currentTime = currentDate.getTime();
-
     userid = 'user_'+currentTime;
-
     var userobject =   firebase.database().ref('users/' + userEmail);
 
-    var taskref = userobject.child('todolist').child(listname).push(
+    var newtaskID;
+    //Check if updating or new task
+    if(existingTaskid == null)
     {
-      taskname : tasknametext,
-      description : desc,
-      createdDate : " "+currentDate
-    });
-
-    var newtaskID = taskref.key;
+        //new task code
+        var taskref = userobject.child('todolist').child(listname).push(
+        {
+          taskname : tasknametext,
+          description : desc,
+          createdDate : " "+currentDate
+        });
+         newtaskID = taskref.key;
+    }
+    else
+    {
+      //Updae code
+      var taskref = userobject.child('todolist').child(listname).child(existingTaskid).set(
+        {
+          taskname : tasknametext,
+          description : desc,
+          createdDate : " "+currentDate
+        });
+      newtaskID = existingTaskid;
+    }
     //document.getElementById("task_div").style.display = "none"
     return newtaskID;
 }
