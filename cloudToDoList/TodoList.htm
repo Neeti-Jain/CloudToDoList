@@ -13,6 +13,10 @@
     <script>
 
       var userEmail = localStorage.getItem("userEmail");
+      if(userEmail == null || userEmail=='')
+      {
+        logoutCall()
+      }
 
 var userdatabase = firebase.database().ref('/users/' + userEmail + "/todolist/");
 var listNameArray = [];
@@ -69,29 +73,27 @@ function appendShareandAddTaskButton(parentdiv, listnameValue)
     var shareListButton = document.createElement("Button");
     shareListButton.innerHTML = "Share"
 
-shareListButton.onclick = function() {
+    shareListButton.onclick = function() {
+        var shareEmail = prompt("Please enter email id to Share");
+        if (shareEmail != null) {
+          shareEmail= shareEmail.trim();
+            
+            shareEmailFormatted = getFormattedEmail(shareEmail)
+            firebase.database().ref('/users/' + userEmail + '/todolist/'+listnameValue).once('value').then(function(snapshot) {
+              firebase.database().ref('/users/' + shareEmailFormatted + "/todolist/")
+                                            .child("Shared "+listnameValue).set(snapshot.val());
+            });
 
-  
-
-
-    var shareEmail = prompt("Please enter email id to Share");
-    if (shareEmail != null) {
-          shareEmail = shareEmail.trim().replace("@","").replace(".","").toLowerCase();
-          firebase.database().ref('/users/' + userEmail + '/todolist/'+listnameValue).once('value').then(function(snapshot) {
-
-            firebase.database().ref('/users/' + shareEmail + "/todolist/")
-                                          .child("Shared "+listnameValue).set(snapshot.val());
-          });
-
-    }
-};
+            subject = "Sharing To Do List"
+            body = "Sharing To Do List. Please login to acount to view link: "+window.location.href;
+           // window.open('mailto:shareEmail?subject=subject&body=body');
+        }
+    };
 
     //Add a button for DELETING a  List 
     var deleteListButton = document.createElement("Button");
     deleteListButton.innerHTML = "Delete"
-
     deleteListButton.onclick = function(){deleteListClick(listnameValue);}
-
     taskButton.onclick = function() {
        if(listnameValue==''){
           alert('Enter List name');
@@ -124,10 +126,7 @@ for (var listkey in jsonobj) {
       listNameLabel.innerHTML = listnameValue;
       listdiv.appendChild(listNameLabel);
       listdiv.appendChild(document .createElement("br"));
-
       appendShareandAddTaskButton(listdiv, listkey)
-      
-      
       for (var taskkey in jsonobj[listkey]) {
         if(taskkey!= 'createdDate' && taskkey!='name')
           {
@@ -389,6 +388,13 @@ function addUpdatetaskDB(existingTaskid, listname,desc,tasknametext)
     return newtaskID;
 }
 
+function logoutCall()
+{
+
+  localStorage.setItem("userEmail","")
+  logout();
+  window.location.replace("index.html");
+}
 
         
           
@@ -398,6 +404,8 @@ function addUpdatetaskDB(existingTaskid, listname,desc,tasknametext)
     <h2>My To Do List</h2>
     <p>
       <button id="addlist" onclick="createList()" class="button_green">Add New List</button>
+      <button  onclick="logoutCall()"> Logout </button> 
+      <a id="startPage" href="index.html"></a>
     </p>
     <div id="userDataDiv"></div>
     <br/>

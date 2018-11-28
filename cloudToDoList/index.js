@@ -21,6 +21,9 @@ firebase.auth().onAuthStateChanged(function(user) {
       // User is signed in.
       document.getElementById("user_div").style.display = "block";
       document.getElementById("login_div").style.display = "none";
+      if(document.getElementById("startref")!=null) {
+        document.getElementById("startref").click();
+      }
     } else {
       // No user is signed in.
       document.getElementById("user_div").style.display = "none";
@@ -36,6 +39,17 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+function getFormattedEmail(userEmail)
+{
+    find1 = '[.]'
+    var re1 = new RegExp(find1, 'g');
+
+    find2 = '@'
+    var re2 = new RegExp(find2, 'g');
+    userEmail = userEmail.trim().replace(re1, '').replace(re2,'').toLowerCase();
+    return userEmail;
+}
+
 function create_user(){
 
 	var userEmail=document.getElementById("email").value;
@@ -43,9 +57,15 @@ function create_user(){
 	firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
-  var errorMessage = error.message;
-  alert("Error " + errorMessage);
-  // ...
+  if(errorCode == 'auth/email-already-in-use')
+  {
+    login()
+  }
+  else
+  {
+    var errorMessage = error.message;
+    alert("Error " + errorMessage);
+  }
 });
 	
 	}
@@ -59,13 +79,12 @@ function login(){
   var errorCode = error.code;
   var errorMessage = error.message;
   alert("Error " + errorMessage);
-  // ...
 });
 	
 	}
 
 function logout(){
-	alert("logout");
+	//alert("logout");
 	firebase.auth().signOut();
 	}
 
