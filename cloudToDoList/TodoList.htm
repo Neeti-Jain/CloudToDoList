@@ -1,4 +1,5 @@
 
+
 <html>
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -7,10 +8,9 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.7/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
     <script src="index.js"></script>
+    <link rel="stylesheet" href="main2.css"></link>
 
-    
-    <link rel="stylesheet" href="main2.css">
-      <script>
+    <script>
 
       var userEmail = localStorage.getItem("userEmail");
 
@@ -91,7 +91,7 @@ $(document).ready(function(){
     //});
 });
 </script>
-      <script type="text/javascript">
+    <script type="text/javascript">
   var count=0;
 
 function appendTask() {
@@ -107,21 +107,11 @@ function appendTask() {
   {
 
     document.getElementById("task_div").style.display = "block"
-document.getElementById("taskdes").value = '';
-document.getElementById("taskname").value='';
-//    var txt1 = "
- //       <p>
- //         <input type=\"text\" id=\"taskname\" placeholder=\"Task Name...\">
-   //       </p>"; 
- //  var txt2 = "
-   //      <p>
-    //        <input type=\"text\" id=\"taskdes\" placeholder=\"Description...\">
-    //        </p>"; 
-  // var btnsubmit = "            
-    //        <button id=\"addtask\" onclick=\"addtaskDB()\">Submit</button>ubmit"; 
+    document.getElementById("taskdes").value = '';
+    document.getElementById("taskname").value='';
    
-          // Create text with HTML
-             // Create text with DOM
+    // Create text with HTML
+    // Create text with DOM
    // $("body").append(txt1, txt2, btnsubmit);     // Append new elements
 }
 }
@@ -245,10 +235,6 @@ divElement.appendChild(divCreatelistElement)
 
 
 document.getElementById('userDataDiv').appendChild(divElement);
-
-
-
-
 }
 
 function addTaskClick(parentdiv, listnameValue){
@@ -308,8 +294,6 @@ function addlistDB(listname)
     userid = 'user_'+currentTime;
     var userobject =   firebase.database().ref('users/' + userEmail);
     userobject.child('todolist').child(listname).set({name:listname,createdDate: currentTime});
-
-
 }
 
 function addtaskDB(listname,desc,tasknametext)
@@ -341,16 +325,16 @@ function addtaskDB(listname,desc,tasknametext)
 
 
         
-          </script>
-        </head>
-        <body>
-          <h2>My To Do List</h2>
-          <!--  <button> Create List </button>  -->
-          <p>
-            <button id="addlist" onclick="createList()" class="button_green">Add New List</button>
-          </p>
-          <div id="userDataDiv">
-          </div>
-                <br/>
-              </body>
-            </html>
+          
+</script>
+</head>
+  <body>
+    <h2>My To Do List</h2>
+    <!--  <button> Create List </button>  -->
+    <p>
+      <button id="addlist" onclick="createList()" class="button_green">Add New List</button>
+    </p>
+    <div id="userDataDiv"></div>
+    <br/>
+  </body>
+</html>
