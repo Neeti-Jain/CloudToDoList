@@ -16,18 +16,26 @@
 
 var userdatabase = firebase.database().ref('/users/' + userEmail + "/todolist/");
 
-userdatabase.once('value').then(function(snapshot) {
+userdatabase.on('value',function(snapshot) {
 var jsonobj = JSON.parse(JSON.stringify(snapshot.val()))
+document.getElementById('userDataDiv').innerHTML="";
+if(jsonobj!=null){
+  initializeUI(jsonobj);
+}
+});
+
+/*
+userdatabase.on('value').then(function(snapshot) {
+var jsonobj = JSON.parse(JSON.stringify(snapshot.val()))
+
 if(jsonobj!=null)
 {
   initializeUI(jsonobj);
 }
-
-
  //  var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
   //alert(JSON.stringify(snapshot.val()))
 });
-
+*/
 function initializeUI(jsonobj)
 {
   
@@ -49,8 +57,8 @@ for (var listkey in jsonobj) {
       listNameLabel.innerHTML = listnameValue;
       listdiv.appendChild(listNameLabel);
       listdiv.appendChild(document .createElement("br"));
-      var taskButton = getAddTaskButton(listdiv.id, listkey)
-      listdiv.appendChild(taskButton);
+      appendShareandAddTaskButton(listdiv, listkey)
+      
       
       for (var taskkey in jsonobj[listkey]) {
         if(taskkey!= 'createdDate' && taskkey!='name')
@@ -67,8 +75,7 @@ for (var listkey in jsonobj) {
           }
       }
        // console.log(listkey + " --------------------> " + jsonobj[listkey]);
-    document.getElementsByTagName("body")[0].appendChild(listdiv);
-
+    document.getElementById('userDataDiv').appendChild(listdiv);
     }
 }
 }
@@ -118,7 +125,7 @@ document.getElementById("taskname").value='';
    // $("body").append(txt1, txt2, btnsubmit);     // Append new elements
 }
 }
-function getAddTaskButton(parentdivid, listnameValue)
+function appendShareandAddTaskButton(parentdiv, listnameValue)
 {
     var currentDate = new Date();
     var currentTime = currentDate.getTime();
@@ -126,27 +133,44 @@ function getAddTaskButton(parentdivid, listnameValue)
     taskButton.id="task"+currentTime;
     var textForButtonTask = document.createTextNode("Add New Task");
     taskButton.appendChild(textForButtonTask)
+    
+    //Add a button for Sharing a New List 
+    var shareListButton = document.createElement("Button");
+    shareListButton.innerHTML = "Share"
+
+
+//Add a button for DELETING a  List 
+var deleteListButton = document.createElement("Button");
+deleteListButton.innerHTML = "Delete"
+
     taskButton.onclick = function() {
        if(listnameValue==''){
           alert('Enter List name');
        }
     else{
-        addTaskClick(parentdivid, listnameValue)
+        addTaskClick(parentdiv, listnameValue)
          }
     };
-    return taskButton;
+    parentdiv.appendChild(taskButton);
+    parentdiv.appendChild(shareListButton);
+    parentdiv.appendChild(deleteListButton);
 }
 function addTaskDiv(taskid, parentdiv, taskName, taskDescription)
 {
     var taskContainer=document.createElement('div');
-    taskContainer.className  ="todolistdiv"
+    taskContainer.className  ="todolistdiv" //what
 
     var nameTaskLabel = document.createTextNode('----Task Name-----');
     var nameTask = document.createTextNode(taskName);
     var descriptionLabel = document.createTextNode('----Description------');
     var descriptionValue = document.createTextNode(taskDescription);
     var buttonEdit = document.createElement("Button");
+    //alert('parentdiv::'+parentdiv.id)
     buttonEdit.innerHTML='Edit'
+     buttonEdit.onclick = function(){
+      //editTask(taskid, parentdiv, taskName, taskDescription)
+
+    };
     var buttonDelete = document.createElement("Button");
     buttonDelete.innerHTML='Delete'
     buttonDelete.onclick = function(){
@@ -184,62 +208,50 @@ var iptNode = document.createElement("input");
 iptNode.setAttribute("type", "text");
 iptNode.id="list"+currentTime;
 
-var button = document.createElement("Button");
-var textForButton = document.createTextNode("Release the alert");
-var listnamenode=document.createTextNode('Enter List Name');
-button.appendChild(textForButton);
 
+
+var listnamenode=document.createTextNode('Enter List Name');
+
+//Add a button for ceating a New List 
 var createListButton = document.createElement("Button");
+createListButton.innerHTML = "Create List" 
 createListButton.id="createlist"+currentTime;
-var textForcreateListButton = document.createTextNode("Create List");
-createListButton.appendChild(textForcreateListButton)
+
 var listnameValue ="new";
 createListButton.onclick=function(){
     listnameValue=iptNode.value;
     var listNameLabel= document.createElement("p");
     listNameLabel.id = "p_list_name"+currentTime;
     listNameLabel.innerHTML = listnameValue;
+    
     // Server Call
+
     addlistDB(listnameValue);
     divElement.appendChild(listNameLabel);
     divCreatelistElement.style.display="none";
+   
     divElement.appendChild(document .createElement("br"));
 
-    var taskButton = getAddTaskButton(divElement.id, listnameValue)
-    divElement.appendChild(taskButton);
+    appendShareandAddTaskButton(divElement, listnameValue)
 }
 
 
 divCreatelistElement.appendChild(listnamenode);
 divCreatelistElement.appendChild(iptNode);
 divCreatelistElement.appendChild(createListButton );
+//divCreatelistElement.appendChild(shareListButton);
+
 divElement.appendChild(divCreatelistElement)
 
-document.getElementsByTagName("body")[0].appendChild(divElement);
+
+document.getElementById('userDataDiv').appendChild(divElement);
 
 
 
 
 }
 
-function addTaskClick(data, listnameValue){
-  //alert(createList.counter);
-  //++createList.counter;
-count=count+1;
-//alert(count);
-if(count==2)
-{
-  //alert('more than 1 ')
-  count=0
-}
-//alert('yahossso');
-
-t=document.getElementById(data).lastChild.innerHTML;
-//alert('div::',data);
-t=document.getElementById(data);
-//alert('div in funny::',t)
-t=document.getElementById(data).childNodes[0].nodeValue;
-//alert('task::',t);
+function addTaskClick(parentdiv, listnameValue){
 var divElementTask = document.createElement('p');
 var currentDate = new Date();
 var currentTime = currentDate.getTime();
@@ -264,7 +276,7 @@ addTaskButton.onclick = function() {
     var newtaskId = addtaskDB(listnameValue,iptNode1.value,iptNode.value)
     divElementTask.style.display="none";
 
-    addTaskDiv(newtaskId, document.getElementById(data), iptNode.value, iptNode1.value);
+    addTaskDiv(newtaskId, parentdiv, iptNode.value, iptNode1.value);
   }
 
 divElementTask.appendChild(node);
@@ -277,9 +289,7 @@ divElementTask.appendChild(addTaskButton);
 //element.insertBefore(div,child);
 //document.getElementsById(data).insertBefore(divElementTask,child);
 //document.getElementById("myLI").parentElement.nodeName;
-document.getElementById(data).appendChild(divElementTask);
-
-
+parentdiv.appendChild(divElementTask);
 }
 
 function addToDB(){
@@ -339,21 +349,8 @@ function addtaskDB(listname,desc,tasknametext)
           <p>
             <button id="addlist" onclick="createList()" class="button_green">Add New List</button>
           </p>
-          <div id="list"  style="display: none;">
-            <p>
-              <input type="text" id="listname" placeholder="List Name...">
-              </p>
-              <button id="addtask" onclick="appendTask()"> Add New dddTask</button>
-            </div>
-            <div id="task_div" style="display: none;">
-              <p>
-                <input type="text" id="taskname" placeholder="Task Name...">
-                </p>
-                <p>
-                  <input type="text" id="taskdes" placeholder="Description...">
-                  </p>
-                  <button id="addtask" onclick="addtaskDB()">Submit</button>
-                </div>
+          <div id="userDataDiv">
+          </div>
                 <br/>
               </body>
             </html>
