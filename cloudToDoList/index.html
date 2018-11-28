@@ -44,7 +44,7 @@
   function enter()
 {
     var userEmail=document.getElementById("email").value;
-    userEmail = userEmail.replace("@","").replace(".","");
+    userEmail = userEmail.replace("@","").replace(".","").toLowerCase();
     localStorage.setItem("userEmail", userEmail);
     document.getElementById("startref").click();
 }

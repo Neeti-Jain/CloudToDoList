@@ -10,12 +10,68 @@
 
     
     <link rel="stylesheet" href="main2.css">
-    <style type="text/css">
-
-    </style>
       <script>
 
-      var userEmail =localStorage.getItem("userEmail");
+      var userEmail = localStorage.getItem("userEmail");
+
+var userdatabase = firebase.database().ref('/users/' + userEmail + "/todolist/");
+
+userdatabase.once('value').then(function(snapshot) {
+var jsonobj = JSON.parse(JSON.stringify(snapshot.val()))
+if(jsonobj!=null)
+{
+  initializeUI(jsonobj);
+}
+
+
+ //  var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+  //alert(JSON.stringify(snapshot.val()))
+});
+
+function initializeUI(jsonobj)
+{
+  
+
+for (var listkey in jsonobj) {
+    if (jsonobj.hasOwnProperty(listkey)) {
+      
+      //alert(listkey)
+
+      var currentDate = new Date();
+      var currentTime = currentDate.getTime();
+
+      var listdiv = document.createElement('div');
+      listdiv.id = "divi"+currentTime;
+      listdiv.className  ="todolistdiv"
+      listnameValue=listkey;
+      var listNameLabel= document.createElement("p");
+      listNameLabel.id = "p_list_name"+currentTime;
+      listNameLabel.innerHTML = listnameValue;
+      listdiv.appendChild(listNameLabel);
+      listdiv.appendChild(document .createElement("br"));
+      var taskButton = getAddTaskButton(listdiv.id, listkey)
+      listdiv.appendChild(taskButton);
+      
+      for (var taskkey in jsonobj[listkey]) {
+        if(taskkey!= 'createdDate' && taskkey!='name')
+          {
+                addTaskDiv(
+                  taskkey,
+                  listdiv, 
+                  jsonobj[listkey][taskkey].taskname, 
+                  jsonobj[listkey][taskkey].description);
+
+            //alert("id="+taskkey)
+            //alert("in inner ->" +  jsonobj[listkey][taskkey].taskname)
+            //alert("in inner ->" +  jsonobj[listkey][taskkey].description)
+          }
+      }
+       // console.log(listkey + " --------------------> " + jsonobj[listkey]);
+    document.getElementsByTagName("body")[0].appendChild(listdiv);
+
+    }
+}
+}
 
 $(document).ready(function(){
     //$("#addlist").click(function(){
@@ -62,12 +118,62 @@ document.getElementById("taskname").value='';
    // $("body").append(txt1, txt2, btnsubmit);     // Append new elements
 }
 }
+function getAddTaskButton(parentdivid, listnameValue)
+{
+    var currentDate = new Date();
+    var currentTime = currentDate.getTime();
+    var taskButton = document.createElement("Button");
+    taskButton.id="task"+currentTime;
+    var textForButtonTask = document.createTextNode("Add New Task");
+    taskButton.appendChild(textForButtonTask)
+    taskButton.onclick = function() {
+       if(listnameValue==''){
+          alert('Enter List name');
+       }
+    else{
+        addTaskClick(parentdivid, listnameValue)
+         }
+    };
+    return taskButton;
+}
+function addTaskDiv(taskid, parentdiv, taskName, taskDescription)
+{
+    var taskContainer=document.createElement('div');
+    taskContainer.className  ="todolistdiv"
+
+    var nameTaskLabel = document.createTextNode('----Task Name-----');
+    var nameTask = document.createTextNode(taskName);
+    var descriptionLabel = document.createTextNode('----Description------');
+    var descriptionValue = document.createTextNode(taskDescription);
+    var buttonEdit = document.createElement("Button");
+    buttonEdit.innerHTML='Edit'
+    var buttonDelete = document.createElement("Button");
+    buttonDelete.innerHTML='Delete'
+    buttonDelete.onclick = function(){
+
+    };
+
+
+    taskContainer.appendChild(nameTaskLabel);
+    taskContainer.appendChild(nameTask);
+    taskContainer.appendChild(document .createElement("br"));
+
+    taskContainer.appendChild(descriptionLabel);
+    taskContainer.appendChild(descriptionValue);
+    taskContainer.appendChild(document .createElement("br"));
+
+    taskContainer.appendChild(buttonEdit);
+    taskContainer.appendChild(document .createElement("br"));
+
+    taskContainer.appendChild(buttonDelete);
+    parentdiv.appendChild(taskContainer);
+}
 function createList(){
 var currentDate = new Date();
 var currentTime = currentDate.getTime();
 
 var divElement = document.createElement('div');
-divElement.id = "divi"+currentTime;
+divElement.id = "div"+currentTime;
 divElement.className  ="todolistdiv"
 var p='neeti';
 //alert('divElement.id ::',divElement.id );
@@ -90,54 +196,33 @@ createListButton.appendChild(textForcreateListButton)
 var listnameValue ="new";
 createListButton.onclick=function(){
     listnameValue=iptNode.value;
-    var listNameLabel= document.createTextNode(listnameValue);
+    var listNameLabel= document.createElement("p");
+    listNameLabel.id = "p_list_name"+currentTime;
+    listNameLabel.innerHTML = listnameValue;
     // Server Call
     addlistDB(listnameValue);
     divElement.appendChild(listNameLabel);
     divCreatelistElement.style.display="none";
-    divElement.appendChild(document.createElement("br"));
+    divElement.appendChild(document .createElement("br"));
 
+    var taskButton = getAddTaskButton(divElement.id, listnameValue)
     divElement.appendChild(taskButton);
 }
 
-
-var taskButton = document.createElement("Button");
-
-taskButton.id="task"+currentTime;
-var textForButtonTask = document.createTextNode("Add New Task");
-taskButton.appendChild(textForButtonTask)
 
 divCreatelistElement.appendChild(listnamenode);
 divCreatelistElement.appendChild(iptNode);
 divCreatelistElement.appendChild(createListButton );
 divElement.appendChild(divCreatelistElement)
 
-
-
-
 document.getElementsByTagName("body")[0].appendChild(divElement);
-//alert('divElement.id ::',divElement.id );
 
-var r=divElement.id;
-//alert('before div::',r);
 
-taskButton.onclick = function() {
-  count=0;
-   v=document.getElementById(iptNode.id).value;
-   if(v==''){
-      //alert('Enter List name')
-   }
-  
- 
-else{
-  //alert('in fun div:',r)
-    funny(r, listnameValue)
-     }
-};
+
+
 }
 
-function funny(data, listnameValue){
-  funny.counter=30;
+function addTaskClick(data, listnameValue){
   //alert(createList.counter);
   //++createList.counter;
 count=count+1;
@@ -169,13 +254,17 @@ iptNode.setAttribute("type", "text");
 
 var iptNode1 = document.createElement("input");
 iptNode1.setAttribute("type", "text");
-var nodeDesc=document.createTextNode('Enter Descriptioaaan');
+var nodeDesc=document.createTextNode('  Enter Description');
 
 var addTaskButton = document.createElement("Button");
 addTaskButton.id="addtask"+currentTime;
 addTaskButton.innerHTML = "Submit"
 addTaskButton.onclick = function() {
-    addtaskDB(listnameValue,iptNode1.value,iptNode.value)
+
+    var newtaskId = addtaskDB(listnameValue,iptNode1.value,iptNode.value)
+    divElementTask.style.display="none";
+
+    addTaskDiv(newtaskId, document.getElementById(data), iptNode.value, iptNode1.value);
   }
 
 divElementTask.appendChild(node);
@@ -201,15 +290,14 @@ function addToDB(){
     var userobject =   firebase.database().ref('users/' + "username");
 }
 
-function addlistDB( listname)
+function addlistDB(listname)
 {
-  
     var database=firebase.database();
     currentDate = new Date();
     currentTime = currentDate.getTime();
     userid = 'user_'+currentTime;
     var userobject =   firebase.database().ref('users/' + userEmail);
-    userobject.child('todolist').child(listname).set({createdDate: currentTime});
+    userobject.child('todolist').child(listname).set({name:listname,createdDate: currentTime});
 
 
 }
@@ -220,34 +308,25 @@ function addtaskDB(listname,desc,tasknametext)
   //var desc=document.getElementById("taskdes").value;
   //var tasknametext=document.getElementById("taskname").value;
 
-var database=firebase.database();
+    var database=firebase.database();
 
-currentDate = new Date();
-currentTime = currentDate.getTime();
+    currentDate = new Date();
+    currentTime = currentDate.getTime();
 
-userid = 'user_'+currentTime;
+    userid = 'user_'+currentTime;
 
-var userobject =   firebase.database().ref('users/' + userEmail);
+    var userobject =   firebase.database().ref('users/' + userEmail);
 
- userobject.child('todolist').child(listname).push(
-  {
-    taskname : tasknametext,
-    description : desc,
-    createdDate : " "+currentDate
-  });
+    var taskref = userobject.child('todolist').child(listname).push(
+    {
+      taskname : tasknametext,
+      description : desc,
+      createdDate : " "+currentDate
+    });
 
-var para = document.createElement("p");
-var node1 = document.createTextNode(tasknametext+ " : "+desc);
-
-para.appendChild(node1);
-
-
-var element = document.getElementById("list");
-var child = document.getElementById("addtask");
-element.insertBefore(para,child);
-
-document.getElementById("task_div").style.display = "none"
-
+    var newtaskID = taskref.key;
+    //document.getElementById("task_div").style.display = "none"
+    return newtaskID;
 }
 
 
