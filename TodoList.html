@@ -39,7 +39,7 @@
 
     function deleteListClick(listName)
     {
-      var r = confirm("Delete the list \""+listnameValue+"\" ?");
+      var r = confirm("Delete the list \""+listName+"\" ?");
       if (r == true) {
         userdatabase.child(listName).remove();
       } 
@@ -227,7 +227,9 @@ function initializeUI(jsonobj)
   }
 
   divCreatelistElement.appendChild(listnamenode);
+
   divCreatelistElement.appendChild(iptNode);
+  divCreatelistElement.appendChild(document .createElement("br"));
   divCreatelistElement.appendChild(createListButton );
   divElement.appendChild(divCreatelistElement)
   document.getElementById('userDataDiv').appendChild(divElement)
