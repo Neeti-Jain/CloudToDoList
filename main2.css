@@ -1,6 +1,9 @@
 
 <style>
-body {font-family: Arial, Helvetica, sans-serif;}
+body {font-family:  "Times New Roman", Times, serif; 
+  font-size: large;
+ 
+align:center;}
 form {border: 3px solid #f1f1f1;}
 
 .button_green {
@@ -26,7 +29,10 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
     width: 25%;
 }
-
+.d {
+  position: absolute;
+    top: 90%;
+}
 button {
     background-color: #4CAF50;
     color: white;
@@ -50,13 +56,46 @@ button:hover {
     text-align: center;
     margin: 24px 0 12px 0;
 }
+.b {
+  border: 1px solid blue;
+  background-color: lightblue;
+  padding: 10px;
+}
 
-.todolistdiv{
-    margin: 25px;
+#homepage{
+  margin: 45px;
     padding: 25px;
     background-color: lemonchiffon;
     border-style: solid;
+    border-color: green;
+    border-width: thick;
+    }
+#to-do-style
+{
+  
+  color:blue;
+}
+
+.listnamestyle{
+   border-style: solid;
     border-color: skyblue;
+    margin: 10px;
+}
+.todolistdiv{
+    margin: 20px;
+    padding: 15px;
+    background-color: lemonchiffon;
+    border-style: solid;
+    border-color: skyblue;
+    //text-shadow: 3px 2px red;
+    font-weight: bold;
+    font-size: large;
+   
+    //letter-spacing: 3px;
+   // text-decoration: underline;
+    color: blue;
+    width: 25%;
+    float: left;
 }
 img.avatar {
     width: 40%;
@@ -70,6 +109,11 @@ img.avatar {
 span.psw {
     float: right;
     padding-top: 16px;
+}
+.p{
+  
+  position: absolute;
+  right: 10;
 }
 
 /* Change styles for span and cancel button on extra small screens */

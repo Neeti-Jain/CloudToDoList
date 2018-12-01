@@ -11,33 +11,58 @@
 <script src="index.js"></script>
 
 </head>
-<body>
+<style>
+    body {
+          background-color: #D3D3D3;  
+      }
 
-  <h2>Login Form</h2>
+      
+ </style>         
+<body>
+  <div id="homepage">
+  <p align="center" >
+  <marquee
+     direction="right"
+     loop="10"
+     scrollamount="3"
+     scrolldelay="0"
+     behavior="alternate"
+     width="40%"
+     bgcolor="#9999ff"
+     
+     
+     >
+
+    <h1  id = "to-do-style" ><b>TO-DO LIST</b></h1>
+  </marquee> 
+  </p> 
 
 
     <div class="imgcontainer">
-      <img src="tree.jpg" alt="Avatar" class="avatar">
+      <img src="Picture1.png" width="150px">
     </div>
 
-    <div id = "login_div" class="container">
+    <div id = "login_div" class="container" align="center">
       <label for="uname"><b>Email</b></label>
       <input type="text" placeholder="Enter Email" id="email" name="uname" required>
-
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" id= "pswd" name="psw" required>
+      <p  >
+         <label for="psw"><b>Password</b></label>
+        
+         <input type="password"  placeholder="Enter Password" id= "pswd" name="psw" required>
+       </p>
       <br/>
-      <button onclick="create_user()"  > Create / Login User </button>
-      
+      <p align="center">
+      <button onclick="create_user()" > Create / Login User </button>
+      </p>
       </div>
 
     <div id = "user_div" class="container1" style="display: none;">
       <p id = "user_para">Welcome user</p>
 
 <a id="startref" href="TodoList.htm"></a>
-      <button onclick="enter()"  > Enter wesite </button>
+      <!-- <button onclick="enter()"  > Enter wesite </button>
 
-      <button  onclick="logout()"> Logout </button>
+      <button  onclick="logout()"> Logout </button> -->
     </div>
 <script type="text/javascript">
   function enter()
@@ -48,6 +73,6 @@
     document.getElementById("startref").click();
 }
 </script>
-
+</div>
 </body>
 </html>
