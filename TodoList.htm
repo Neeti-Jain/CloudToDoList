@@ -61,7 +61,7 @@
       taskButton.id="task"+currentTime;
       var textForButtonTask = document.createTextNode("Add New Task");
       taskButton.appendChild(textForButtonTask)
-      
+
     //Add a button for Sharing a New List 
     var shareListButton = document.createElement("Button");
     shareListButton.innerHTML = "Share"
@@ -70,7 +70,7 @@
       var shareEmail = prompt("Please enter email id to Share");
       if (shareEmail != null) {
         shareEmail= shareEmail.trim();
-        
+
         shareEmailFormatted = getFormattedEmail(shareEmail)
         firebase.database().ref('/users/' + userEmail + '/todolist/'+listnameValue).once('value').then(function(snapshot) {
           firebase.database().ref('/users/' + shareEmailFormatted + "/todolist/")
@@ -160,7 +160,7 @@ function initializeUI(jsonobj)
     containerTaskDesc.appendChild(nameTask);
     containerTaskDesc.appendChild(document .createElement("br"));
     containerTaskDesc.appendChild(document .createElement("br"));
-
+   containerTaskDesc.style.wordWrap="break-word";
     var descriptionLabel = document.createTextNode('Description ::');
     var descriptionValue=document.createElement('p');
     descriptionValue.innerHTML = taskDescription;
@@ -247,12 +247,12 @@ function addTaskClick(parentdiv, listnameValue, taskid, taskName, taskDescriptio
 
   var iptNode = document.createElement("input");
   iptNode.setAttribute("type", "text");
-  iptNode.style['width'] = '400px ';
+  iptNode.style['width'] = '100% ';
   iptNode.style['height'] = '100px ';
 
   var iptNode1 = document.createElement("TEXTAREA");
   iptNode1.setAttribute("type", "text");
-  iptNode1.style['width'] = '400px ';
+  iptNode1.style['width'] = '100% ';
   iptNode1.style['height'] = '100px ';
   var nodeDesc=document.createTextNode('  Enter Description');
 
@@ -278,7 +278,7 @@ function addTaskClick(parentdiv, listnameValue, taskid, taskName, taskDescriptio
 
        alert('Enter Description');
      }
-     
+
      else{  
       var newtaskId = addUpdatetaskDB(taskid, listnameValue,iptNode1.value,iptNode.value)
       divElementTask.style.display="none";
@@ -354,8 +354,16 @@ function addUpdatetaskDB(existingTaskid, listname,desc,tasknametext)
 
 
 
-  
-  
+function displayWelcomMessage()
+{ 
+    var user_email_id = localStorage.getItem("user_email_id");
+    if(user_email_id != null && user_email_id != '')
+    {
+      welcomeMessage = "Welcome " + user_email_id.split('@')[0];
+      document.getElementById('welcome_message').innerHTML = welcomeMessage;
+    }
+}
+
 </script>
 </head>
 <style>
@@ -367,10 +375,11 @@ body
 </style>
 
 
-<body>
+<body onload=displayWelcomMessage()>
+  <h1 align="center" id="welcome_message">Welcome absc@abc.com</h1>
   <h2 align="center"> To-Do List</h2>
   <p>
-    <button id="addlist" onclick="createList()" class="button_green">Add New List</button>
+    <button id="addlist" onclick="createList()" >Add New List</button>
     <button  onclick="logoutCall()" class="p"> Logout </button> 
   </p>
   <div id="userDataDiv"></div>

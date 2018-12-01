@@ -23,11 +23,12 @@ firebase.auth().onAuthStateChanged(function(user) {
         if(user != null)
         {
             var userEmail = user.email;
+            localStorage.setItem("user_email_id", userEmail);
             userEmail = getFormattedEmail(userEmail)
             localStorage.setItem("userEmail", userEmail);
         }
-      document.getElementById("user_div").style.display = "block";
-      document.getElementById("login_div").style.display = "none";
+      //document.getElementById("user_div").style.display = "block";
+     // document.getElementById("login_div").style.display = "none";
       if(document.getElementById("startref")!=null) {
         document.getElementById("startref").click();
       }
@@ -42,7 +43,9 @@ firebase.auth().onAuthStateChanged(function(user) {
   {
   	var email_id = user.email;
     if(document.getElementById("user_para")!=null)
-  	{document.getElementById("user_para").innerHTML = "Welcome " + email_id ;}
+  	{
+     // document.getElementById("user_para").innerHTML = "Welcome " + email_id ;
+   }
   }
 });
 
