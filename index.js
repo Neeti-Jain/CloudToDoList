@@ -1,13 +1,15 @@
 
-  // Initialize Firebase
-  // Initialize Firebase
+
   var config = {
-   apiKey: "AIzaSyAvbtT8F5oyRGyXz7jL9ZuhCbQvbNX_cUA",
-   authDomain:  "mytrello-8d0e2.firebaseapp.com",
-   databaseURL: "https://mytrello-8d0e2.firebaseio.com",
-   projectId:   "mytrello-8d0e2",
-   storageBucket: "mytrello-8d0e2.appspot.com",
-   messagingSenderId: "243557495203"
+
+
+    apiKey: "AIzaSyBK3IfN3IscQrNaflbZbIAuRVyYaBhiZhA",
+    authDomain: "cloud-database-7a516.firebaseapp.com",
+    databaseURL: "https://cloud-database-7a516.firebaseio.com",
+    projectId: "cloud-database-7a516",
+    storageBucket: "cloud-database-7a516.appspot.com",
+    messagingSenderId: "889663245618"
+
  };
  firebase.initializeApp(config);
 
@@ -27,8 +29,7 @@ firebase.auth().onAuthStateChanged(function(user) {
             userEmail = getFormattedEmail(userEmail)
             localStorage.setItem("userEmail", userEmail);
         }
-      //document.getElementById("user_div").style.display = "block";
-     // document.getElementById("login_div").style.display = "none";
+     
       if(document.getElementById("startref")!=null) {
         document.getElementById("startref").click();
       }
@@ -42,29 +43,33 @@ firebase.auth().onAuthStateChanged(function(user) {
   if(user != null)
   {
   	var email_id = user.email;
-    if(document.getElementById("user_para")!=null)
-  	{
-     // document.getElementById("user_para").innerHTML = "Welcome " + email_id ;
-   }
+
   }
 });
 
-function getFormattedEmail(userEmail)
-{
-    find1 = '[.]'
-    var re1 = new RegExp(find1, 'g');
+function login(){
+  
+  var userEmail=document.getElementById("email").value;
+  var userPass=document.getElementById("pswd").value;
+  firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  alert("Error " + errorMessage);
+});
+  
+  }
 
-    find2 = '@'
-    var re2 = new RegExp(find2, 'g');
-    userEmail = userEmail.trim().replace(re1, '').replace(re2,'').toLowerCase();
-    return userEmail;
-}
+ 
+ function logout(){
+  firebase.auth().signOut();
+  }
+ 
 
 function create_user(){
-
-	var userEmail=document.getElementById("email").value;
-	var userPass=document.getElementById("pswd").value;
-	firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+  var userEmail=document.getElementById("email").value;
+  var userPass=document.getElementById("pswd").value;
+  firebase.auth().createUserWithEmailAndPassword(userEmail, userPass).catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
   if(errorCode == 'auth/email-already-in-use')
@@ -77,25 +82,18 @@ function create_user(){
     alert("Error " + errorMessage);
   }
 });
-	
-	}
+  
+  }
 
-function login(){
-	
-	var userEmail=document.getElementById("email").value;
-	var userPass=document.getElementById("pswd").value;
-	firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-  var errorMessage = error.message;
-  alert("Error " + errorMessage);
-});
-	
-	}
+function getFormattedEmail(userEmail)
+{
+    find1 = '[.]'
+    var re1 = new RegExp(find1, 'g');
 
-function logout(){
-	//alert("logout");
-	firebase.auth().signOut();
-	}
+    find2 = '@'
+    var re2 = new RegExp(find2, 'g');
+    userEmail = userEmail.trim().replace(re1, '').replace(re2,'').toLowerCase();
+    return userEmail;
+}
 
 

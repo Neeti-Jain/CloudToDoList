@@ -1,7 +1,50 @@
 
 <style>
+
+
+#to-do-style
+{
+  
+  color:blue;
+}
+
+.listnamestyle{
+   border-style: solid;
+    border-color: skyblue;
+    margin: 10px;
+}
+
+.d {
+  position: absolute;
+    top: 90%;
+}
+
+
+button:hover {
+    opacity: 0.8;
+}
+
+.todolistdiv{
+    margin: 20px;
+    padding: 15px;
+    background-color: lemonchiffon;
+    border-style: solid;
+    border-color: skyblue;
+    font-weight: bold;
+    font-size: large;
+    color: blue;
+    width: 25%;
+    float: left;
+}
+p { 
+    white-space: pre-wrap; /* Since CSS 2.1 */ 
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */ 
+    word-wrap: break-word; /* Internet Explorer 5.5+ */ 
+}
 body {font-family:  "Times New Roman", Times, serif; 
-  font-size: large;
+ font-size: large;
  
 align:center;}
 form {border: 3px solid #f1f1f1;}
@@ -20,13 +63,6 @@ button {
     cursor: pointer;
 }
   
-p { 
-    white-space: pre-wrap; /* Since CSS 2.1 */ 
-    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
-    white-space: -o-pre-wrap; /* Opera 7 */ 
-    word-wrap: break-word; /* Internet Explorer 5.5+ */ 
-}
 input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
@@ -36,15 +72,6 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
     width: 25%;
 }
-.d {
-  position: absolute;
-    top: 90%;
-}
-
-
-button:hover {
-    opacity: 0.8;
-}
 
 .cancelbtn {
     width: auto;
@@ -52,6 +79,15 @@ button:hover {
     background-color: #f44336;
 }
 
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+}
 .imgcontainer {
     text-align: center;
     margin: 24px 0 12px 0;
@@ -62,41 +98,7 @@ button:hover {
   padding: 10px;
 }
 
-#homepage{
-  margin: 45px;
-    padding: 25px;
-    background-color: lemonchiffon;
-    border-style: solid;
-    border-color: green;
-    border-width: thick;
-    }
-#to-do-style
-{
-  
-  color:blue;
-}
 
-.listnamestyle{
-   border-style: solid;
-    border-color: skyblue;
-    margin: 10px;
-}
-.todolistdiv{
-    margin: 20px;
-    padding: 15px;
-    background-color: lemonchiffon;
-    border-style: solid;
-    border-color: skyblue;
-    //text-shadow: 3px 2px red;
-    font-weight: bold;
-    font-size: large;
-   
-    //letter-spacing: 3px;
-   // text-decoration: underline;
-    color: blue;
-    width: 25%;
-    float: left;
-}
 img.avatar {
     width: 40%;
     border-radius: 50%;
@@ -116,14 +118,14 @@ span.psw {
   right: 10;
 }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-       display: block;
-       float: none;
+#homepage{
+  margin: 45px;
+    padding: 25px;
+    background-color: lemonchiffon;
+    border-style: solid;
+    border-color: green;
+    border-width: thick;
     }
-    .cancelbtn {
-       width: 100%;
-    }
-}
+
+
 </style>
